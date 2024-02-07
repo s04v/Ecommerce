@@ -85,5 +85,16 @@ namespace Web.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+    
+        public ActionResult Logout()
+        {
+            var cookieOptions = new CookieOptions();
+            cookieOptions.IsEssential = true;
+            cookieOptions.Expires = DateTime.Now.AddDays(-1);
+
+            Response.Cookies.Append("jwt_token", "", cookieOptions);
+
+            return View("Home", "Index");
+        }
     }
 }

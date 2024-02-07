@@ -9,7 +9,7 @@ namespace Core.Users.Interfaces
 {
     public interface IRoleService
     {
-        Task CreateRole(string name);
+        Task<Role> CreateRole(string name);
         Task AddPermit(int roleId, int permissionId);
         Task RemovePermit(int roleId, int permissionId);
         Task<IEnumerable<Role>> GetAllRoles();

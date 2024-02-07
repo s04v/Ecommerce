@@ -1,0 +1,58 @@
+﻿@using Web.Areas.Admin.Models
+
+@{
+    ViewData["Title"] = "Role list";
+}
+
+@model RoleListVm
+
+<div class="w-100 d-flex justify-content-between align-items-end mb-2">
+    <h1>Role List</h1>
+    <div>
+        <a href='@Url.Action("Create", "Role", new { area = "Admin" })'>
+            <button type="button" class="btn btn-primary">Create role</button>
+        </a>
+    </div>
+</div>
+
+<table class="table">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col">Role name</th>
+            @foreach(var permission in Model.AllPermissions)
+            {
+                <th class="fw-normal">@permission.Name</th>
+            }
+
+            <th class="fw-normal"></th>
+            <th class="fw-normal"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var role in Model.Roles)
+        {
+            <tr>
+                <th scope="row">@role.Name</th>
+                @foreach (var permission in Model.AllPermissions)
+                {
+                    @if(role.Permissions.Any(o => o.Name == permission.Name))
+                    {
+                        <th class="fw-normal">True</th>
+                    } else
+                    {
+                        <th class="fw-normal">False</th>
+                    }
+                }
+
+                <th class="fw-normal">
+                    <div class="float-right">
+                        <a href='@Url.Action("Edit", "Role", new { area = "Admin", id = role.Id })'>
+                            <button type="button" class="btn btn-primary btn-sm">Edit</button>
+                        </a>
+                        <button type="button" class="btn btn-danger btn-sm">Delete</button>
+                    </div>
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>

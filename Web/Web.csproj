@@ -19,4 +19,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.11" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Areas\Admin\Data\" />
+    <Folder Include="Controllers\Admin\" />
+    <Folder Include="Models\Admin\" />
+  </ItemGroup>
+
 </Project>

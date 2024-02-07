@@ -1,0 +1,16 @@
+﻿@using Web.Areas.Admin.Models
+
+@model AdminListVm
+
+@{
+    ViewData["Title"] = "AdminList";
+}
+
+<h1>AdminList</h1>
+
+@foreach(var user in Model.Users)
+{
+    <p>@user.Uuid</p>
+    <p>@user.FirstName</p>
+}
+

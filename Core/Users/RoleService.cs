@@ -24,7 +24,7 @@ namespace Core.Users
             _dbContext = dbContext;
         }
 
-        public async Task CreateRole(string name)
+        public async Task<Role> CreateRole(string name)
         {
             if (await _dbContext.Role.AnyAsync(o => o.Name == name))
             {
@@ -38,6 +38,8 @@ namespace Core.Users
 
             await _dbContext.AddAsync(role);
             await _dbContext.SaveChangesAsync();
+
+            return role;
         }
 
         public async Task<IEnumerable<Role>> GetAllRoles()

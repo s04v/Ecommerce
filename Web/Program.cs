@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +27,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(opt =>
 });
 
 // Data
-builder.Services.AddTransient<IApplicationDbContext, ApplicationDbContext>();
+builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 
 // Modules
 builder.Services.AddAuthModule();
@@ -76,6 +77,13 @@ builder.Services.AddAuthorization(opt =>
 
 var app = builder.Build();
 
+// Seed Db
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetService<IApplicationDbContext>();
+    DbContextSeed.Seed(dbContext).Wait();
+}
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -92,8 +100,18 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+// Custom Middleware
+app.UseMiddleware<PermissionMiddleware>();
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapAreaControllerRoute(
+    name: "areas",
+    areaName: "Admin",
+    pattern: "admin/{controller=Home}/{action=Index}/{id?}"
+);
+
 
 app.Run();

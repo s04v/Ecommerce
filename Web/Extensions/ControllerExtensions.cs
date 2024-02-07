@@ -15,5 +15,17 @@ namespace Web.Extensions
         {
             return controller.HttpContext.Connection.RemoteIpAddress;
         }
+
+        public static Guid GetUserId(this Controller controller)
+        {
+            var id = controller.HttpContext.User?.Claims?.FirstOrDefault(o => o.Type == "id")?.Value;
+
+            if (id != null)
+            {
+                return new Guid(id);
+            }
+
+            return Guid.Empty;
+        }
     }
 }
