@@ -1,5 +1,6 @@
 ﻿using Common.Data;
 using Core.Users.Domain;
+using Core.Users.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,5 +18,12 @@ namespace Core.Users
         {
             _dbContext = dbContext;
         }
-    }s
+
+        public async Task<IEnumerable<User>> GetUsers()
+        {
+            return await _dbContext.User
+                .Include(o => o.LoginHistory.OrderByDescending(o => o.Date).Take(1))
+                .ToListAsync();
+        }
+    }
 }

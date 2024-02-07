@@ -1,6 +1,7 @@
 ﻿using Core.Auth.Domain;
 using Core.Users.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,11 @@ namespace Common.Data
     {
         DbSet<User> User { get; set; }
         DbSet<LoginHistory> LoginHistory { get; set; }
+        DbSet<Role> Role{ get; set; }
+        DbSet<Permission> Permission { get; set; }
+        DbSet<RolePermission> RolePermission { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+        ValueTask<EntityEntry> AddAsync(object entity, CancellationToken cancellationToken = default);
     }
 }

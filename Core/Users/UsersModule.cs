@@ -1,5 +1,6 @@
 ﻿using Core.Auth.Domain;
 using Core.Users.Domain;
+using Core.Users.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -16,6 +17,8 @@ namespace Core.Users
         public static void AddUsersModule(this IServiceCollection services)
         {
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IAccessGuard, AccessGuard>();
         }
     }
 }

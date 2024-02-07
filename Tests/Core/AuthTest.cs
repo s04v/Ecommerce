@@ -29,8 +29,8 @@ namespace Tests.Core
             {
                 Email = "email@ecom.com",
                 Password = "Password@1",
-                FirstName = "Vitaliy",
-                LastName = "Shvets",
+                FirstName = "",
+                LastName = "",
             });
 
             var user = await _dbContext.User

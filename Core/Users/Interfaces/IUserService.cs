@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Users
+namespace Core.Users.Interfaces
 {
     public interface IUserService
     {
+        Task<IEnumerable<User>> GetUsers();
     }
 }

@@ -3,6 +3,7 @@ using Core.Auth.Domain;
 using Core.Users;
 using Core.Users.Domain;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,16 +17,17 @@ namespace Infrastructure.Data
     {
         public DbSet<User> User { get; set; }
         public DbSet<LoginHistory> LoginHistory { get; set; }
+        public DbSet<Role> Role { get; set; }
+        public DbSet<Permission> Permission { get; set; }
+        public DbSet<RolePermission> RolePermission { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
-            // this.ChangeTracker.LazyLoadingEnabled = false;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,6 +37,9 @@ namespace Infrastructure.Data
 
             modelBuilder.Entity<User>(ConfigureUserEntity);
             modelBuilder.Entity<LoginHistory>(ConfigureLoginHistoryEntity);
+            modelBuilder.Entity<Role>(ConfigureRoleEntity);
+            modelBuilder.Entity<Permission>(ConfigurePermissionEntity);
+            modelBuilder.Entity<RolePermission>(ConfigureRolePermissionEntity);
         }
 
         protected void MapColumnName(ModelBuilder modelBuilder)
@@ -43,7 +48,6 @@ namespace Infrastructure.Data
             {
                 foreach (var property in entity.GetProperties())
                 {
-                    //var columnName = Regex.Replace(property.Name, @"([a-z0-9])([A-Z]|[A-Z][a-z])", "$1_$2");
                     property.SetColumnName(property.Name);
                 }
             }
@@ -58,10 +62,5 @@ namespace Infrastructure.Data
                 property.SetColumnType("decimal(18,2)");
             }
         }
-
-       /* public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-        {
-            return await SaveChangesAsync(cancellationToken);
-        }*/
     }
 }
