@@ -59,6 +59,11 @@ namespace Core.Users
                 .FirstOrDefaultAsync()
             ?? throw new DomainException("Role not found");
 
+            if (role.IsSystem)
+            {
+                throw new DomainException("Permissions cannot be added for this role");
+            }
+
             var permission = await _dbContext.Permission
                  .Where(o => o.Id == permissionId)
                  .FirstOrDefaultAsync()
@@ -81,11 +86,19 @@ namespace Core.Users
 
         public async Task RemovePermit(int roleId, int permissionId)
         {
-            // Check permissition to remove permit
             var rolePermission = await _dbContext.RolePermission
                 .Where(o => o.RoleId == roleId && o.PermissionId == permissionId)
                 .FirstOrDefaultAsync()
             ?? throw new DomainException("Not found");
+
+            var role = await _dbContext.Role
+                .Where(o => o.Id == roleId)
+                .FirstAsync();
+
+            if (role.IsSystem)
+            {
+                throw new DomainException("Permissions cannot be removed from this role");
+            }
 
             _dbContext.RolePermission.Remove(rolePermission);
 

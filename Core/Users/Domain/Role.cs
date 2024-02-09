@@ -9,7 +9,10 @@ namespace Core.Users.Domain
     public class Role
     {
         public int Id { get; set; }
+
         public string Name { get; set; }
+
+        public bool IsSystem { get; set; } = false;
 
         public IEnumerable<Permission> Permissions { get; set; }
     }

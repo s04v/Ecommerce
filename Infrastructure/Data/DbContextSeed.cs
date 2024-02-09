@@ -52,9 +52,19 @@ namespace Infrastructure.Data
                 return;
             }
 
+            var guestRole = new Role
+            {
+                Name = "Guest",
+                IsSystem = true
+            };
+
+            await dbContext.Role.AddAsync(guestRole);
+
             var role = new Role
             {
                 Name = "SuperAdmin",
+                IsSystem = true
+
             };
 
             await dbContext.Role.AddAsync(role);

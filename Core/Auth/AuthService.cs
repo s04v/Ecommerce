@@ -75,6 +75,15 @@ namespace Core.Auth
                 throw new DomainException("User already exists");
             }
 
+            var guestRole = await _dbContext.Role
+                .Where(o => o.Name == "Guest")
+                .FirstOrDefaultAsync();
+
+            if (guestRole == null)
+            {
+                throw new DomainException("Internal error");
+            }
+
             string passwordHash = BCryptNet.HashPassword(form.Password, 10);
             
             var newUser = new User
@@ -82,7 +91,8 @@ namespace Core.Auth
                 Email = form.Email,
                 FirstName = form.FirstName,
                 LastName = form.LastName,
-                Password = passwordHash
+                Password = passwordHash,
+                RoleId = guestRole.Id
             };
 
             await _dbContext.User

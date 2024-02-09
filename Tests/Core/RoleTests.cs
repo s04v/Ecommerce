@@ -62,6 +62,20 @@ namespace Tests.Core
                 RoleId = 1,
             };
 
+            // System role
+            var systemRole = new Role
+            {
+                Id = 2,
+                Name = "system",
+                IsSystem = true
+            };
+
+            var systemRolePermission = new RolePermission
+            {
+                PermissionId = 1,
+                RoleId = 2,
+            };
+
             var user = new User
             {
                 Email = "email@ecom.com",
@@ -75,8 +89,11 @@ namespace Tests.Core
             await _dbContext.AddAsync(permission);
             await _dbContext.AddAsync(permission2);
             await _dbContext.AddAsync(rolePermission);
-            await _dbContext.AddAsync(user);
 
+            await _dbContext.AddAsync(systemRole);
+            await _dbContext.AddAsync(systemRolePermission);
+
+            await _dbContext.AddAsync(user);
             await _dbContext.SaveChangesAsync();
         }
 
@@ -165,6 +182,28 @@ namespace Tests.Core
             );
 
             await Assert.ThrowsAsync<DomainException>(async () => await _roleService.RemovePermit(roleId, catalogPermissionId));
+        }
+
+        [Fact]
+        public async Task AddPermissionForSystemRole()
+        {
+            int systemRoleId = 2;
+            int permissionId = 2;
+
+            await Assert.ThrowsAsync<DomainException>(
+                async () => await _roleService.AddPermit(systemRoleId, permissionId)
+            );
+        }
+
+        [Fact]
+        public async Task RemovePermissionFromSystemRole()
+        {
+            int systemRoleId = 2;
+            int permissionId = 1;
+
+            await Assert.ThrowsAsync<DomainException>(
+                async () => await _roleService.RemovePermit(systemRoleId, permissionId)
+            );
         }
     }
 }
