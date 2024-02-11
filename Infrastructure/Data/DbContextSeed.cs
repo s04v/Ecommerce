@@ -52,14 +52,6 @@ namespace Infrastructure.Data
                 return;
             }
 
-            var guestRole = new Role
-            {
-                Name = "Guest",
-                IsSystem = true
-            };
-
-            await dbContext.Role.AddAsync(guestRole);
-
             var role = new Role
             {
                 Name = "SuperAdmin",
@@ -87,7 +79,6 @@ namespace Infrastructure.Data
             var permissions = await dbContext.Permission
                 .ToListAsync();
 
-
             foreach (var permission in permissions)
             {
                 await dbContext.AddAsync(new RolePermission
@@ -96,8 +87,17 @@ namespace Infrastructure.Data
                     PermissionId = permission.Id
                 });
                 await dbContext.SaveChangesAsync();
-
             }
+
+            var guestRole = new Role
+            {
+                Name = "Guest",
+                IsSystem = true
+            };
+
+            await dbContext.Role.AddAsync(guestRole);
+
+            await dbContext.SaveChangesAsync();
         }
 
     }

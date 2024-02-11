@@ -3,14 +3,44 @@
 @model AdminListVm
 
 @{
-    ViewData["Title"] = "AdminList";
+    ViewData["Title"] = "Admin List";
 }
 
-<h1>AdminList</h1>
+<div class="w-100 d-flex justify-content-between align-items-end mb-2">
+    <h1>Admin List</h1>
+    <div>
+        <a href='@Url.Action("AddNewAdmin", "Admin", new { area = "Admin" })'>
+            <button type="button" class="btn btn-primary">Add new</button>
+        </a>
+    </div>
+</div>
 
-@foreach(var user in Model.Users)
-{
-    <p>@user.Uuid</p>
-    <p>@user.FirstName</p>
-}
 
+<table class="table">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col">Name</th>
+            <th class="fw-normal">Email</th>
+            <th class="fw-normal">Role</th>
+            <th class="fw-normal"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr>
+                <th scope="row">@user.FirstName @user.LastName</th>
+                <th class="fw-normal">@user.Email</th>
+                <th class="fw-normal">@user.Role.Name</th>
+                
+                <th>
+                    <div class="float-end">
+                        <a href='@Url.Action("SetUserRole", "Admin", new { area = "Admin", userUuid = user.Uuid })'>
+                            <button type="button" class="btn btn-primary btn-sm">Edit</button>
+                        </a>
+                    </div>
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>

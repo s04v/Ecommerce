@@ -22,6 +22,13 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" href='@Url.Action("Index", "Home", new { area = "Admin" })'>Admin dashboard</a>
+                            </li>
+                        }
                     </ul>
                 </div>
                 <div>

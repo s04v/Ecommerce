@@ -1,6 +1,7 @@
 using Common.Data;
 using Core.Auth;
 using Core.Auth.Dtos;
+using Core.Users.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -8,15 +9,32 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Tests.Core
 {
-    public class AuthTest
+    public class AuthTests : IAsyncLifetime
     {
         private readonly IServiceProvider _provider;
         private readonly IApplicationDbContext _dbContext;
 
-        public AuthTest()
+        public AuthTests()
         {
             _provider = IoC.GetServiceProvider();
             _dbContext = _provider.GetService<IApplicationDbContext>();
+        }
+
+        public Task DisposeAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        public async Task InitializeAsync()
+        {
+            var guestRole = new Role
+            {
+                Name = "Guest",
+                IsSystem = true
+            };
+
+            await _dbContext.Role.AddAsync(guestRole);
+            await _dbContext.SaveChangesAsync();
         }
 
         [Fact]

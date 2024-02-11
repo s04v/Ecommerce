@@ -22,6 +22,8 @@ namespace Core.Users.Domain
 
         public int RoleId { get; set; }
 
+        public DateTime RegisterDate { get; set; } = DateTime.Now;
+
         public virtual Role Role { get; set; }
         public virtual IEnumerable<LoginHistory> LoginHistory { get; set; }
     }

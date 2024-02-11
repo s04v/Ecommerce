@@ -92,7 +92,8 @@ namespace Core.Auth
                 FirstName = form.FirstName,
                 LastName = form.LastName,
                 Password = passwordHash,
-                RoleId = guestRole.Id
+                RoleId = guestRole.Id,
+                RegisterDate = DateTime.Now,
             };
 
             await _dbContext.User

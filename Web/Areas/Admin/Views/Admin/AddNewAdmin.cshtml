@@ -1,0 +1,44 @@
+﻿@using Core.Users.Domain
+
+@{
+    ViewData["Title"] = "Add new admin";
+    var allRoles = ViewData["AllRoles"] as IEnumerable<Role>;
+}
+
+@model IEnumerable<User>
+
+<h1>Add new admin</h1>
+
+<br />
+<br />
+
+<table class="table">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col">Uuid</th>
+            <th class="fw-normal">Name</th>
+            <th class="fw-normal">Email</th>
+            <th class="fw-normal">Register Date</th>
+            <th class="fw-normal"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.Where(o => o.Role.Name == "Guest"))
+        {
+            <tr>
+                <th class="fw-normal">@user.Uuid</th>
+                <th class="fw-normal">@user.FirstName @user.LastName</th>
+                <th class="fw-normal">@user.Email</th>
+                <th class="fw-normal">@user.RegisterDate.ToString("dd/MM/yyyy")</th>
+
+                <th>
+                    <a href='@Url.Action("SetUserRole", "Admin", new { area = "Admin", userUuid = user.Uuid })'>
+                        <button class="btn btn-primary" type="button">
+                            Set role
+                        </button>
+                    </a>
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>
