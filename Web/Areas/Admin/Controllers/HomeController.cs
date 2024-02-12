@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Core.Catalog.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Web.Areas.Admin.Controllers
 {

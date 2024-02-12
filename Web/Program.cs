@@ -1,5 +1,6 @@
 using Common.Data;
 using Core.Auth;
+using Core.Catalog;
 using Core.Users;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -32,6 +33,7 @@ builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 // Modules
 builder.Services.AddAuthModule();
 builder.Services.AddUsersModule();
+builder.Services.AddCatalogModule();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
 

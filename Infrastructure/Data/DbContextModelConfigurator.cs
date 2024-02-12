@@ -1,9 +1,11 @@
 ﻿using Core.Auth.Domain;
+using Core.Catalog.Domain;
 using Core.Users.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
@@ -90,6 +92,29 @@ namespace Infrastructure.Data
                 .HasOne<Permission>(o => o.Permission)
                 .WithMany()
                 .HasForeignKey(o => o.PermissionId);
+        }
+
+        public void ConfigureCategoryEntity(EntityTypeBuilder<Category> builder)
+        {
+            builder
+                .ToTable("Category")
+                .HasKey(o => o.Id);
+
+            builder
+                .Property(f => f.Id)
+                .ValueGeneratedOnAdd();
+        }
+
+        public void ConfigureProductAttributeEntity(EntityTypeBuilder<ProductAttribute> builder)
+        {
+            builder
+                .ToTable("ProductAttribute")
+                .HasKey(o => o.Id);
+
+            builder
+                .HasOne<Category>()
+                .WithMany()
+                .HasForeignKey(o => o.CategoryId);
         }
     }
 }

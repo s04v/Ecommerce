@@ -1,5 +1,6 @@
 ﻿using Common.Data;
 using Core.Auth.Domain;
+using Core.Catalog.Domain;
 using Core.Users;
 using Core.Users.Domain;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,9 @@ namespace Infrastructure.Data
         public DbSet<Role> Role { get; set; }
         public DbSet<Permission> Permission { get; set; }
         public DbSet<RolePermission> RolePermission { get; set; }
+        public DbSet<Category> Category { get; set; }
+        public DbSet<ProductAttribute> CatalogAttribute { get; set; }
+
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -40,6 +44,8 @@ namespace Infrastructure.Data
             modelBuilder.Entity<Role>(ConfigureRoleEntity);
             modelBuilder.Entity<Permission>(ConfigurePermissionEntity);
             modelBuilder.Entity<RolePermission>(ConfigureRolePermissionEntity);
+            modelBuilder.Entity<Category>(ConfigureCategoryEntity);
+            modelBuilder.Entity<ProductAttribute>(ConfigureProductAttributeEntity);
         }
 
         protected void MapColumnName(ModelBuilder modelBuilder)

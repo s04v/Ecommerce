@@ -27,6 +27,7 @@ namespace Tests.Core
         {
             _provider = IoC.GetServiceProvider();
             _dbContext = _provider.GetService<IApplicationDbContext>();
+            //_dbContext = DbContextFactory.GetDbContext();
             _accessGuard = _provider.GetService<IAccessGuard>();
             _roleService = _provider.GetService<IRoleService>();
         }

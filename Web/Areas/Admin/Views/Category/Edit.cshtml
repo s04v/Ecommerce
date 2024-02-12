@@ -1,0 +1,17 @@
+﻿@using Web.Areas.Admin.Models
+@using Core.Users.Domain
+
+@{
+    ViewData["Title"] = "Create Role";
+}
+
+@model string
+
+<h1>Edit</h1>
+
+<br />
+<br />
+
+<form asp-area="Admin" asp-controller="Category" asp-action="Edit" method="post">
+    @Html.Partial("_CreateOrEdit", Model)
+</form>

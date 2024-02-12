@@ -1,5 +1,6 @@
 ﻿using Common.Data;
 using Core.Auth;
+using Core.Catalog;
 using Core.Users;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,8 @@ namespace Tests
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddAuthModule();
             serviceCollection.AddUsersModule();
+            serviceCollection.AddCatalogModule();
+
             serviceCollection.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
 
             serviceCollection.AddTransient<IConfiguration>(opt =>

@@ -1,4 +1,5 @@
 ﻿using Core.Auth.Domain;
+using Core.Catalog.Domain;
 using Core.Users.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
@@ -17,6 +18,8 @@ namespace Common.Data
         DbSet<Role> Role{ get; set; }
         DbSet<Permission> Permission { get; set; }
         DbSet<RolePermission> RolePermission { get; set; }
+        DbSet<Category> Category { get; set; }
+        DbSet<ProductAttribute> CatalogAttribute { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
         ValueTask<EntityEntry> AddAsync(object entity, CancellationToken cancellationToken = default);

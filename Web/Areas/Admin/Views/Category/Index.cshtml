@@ -1,0 +1,42 @@
+﻿@using Core.Catalog.Domain
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@model IEnumerable<Category>
+
+
+<div class="w-100 d-flex justify-content-between align-items-end mb-2">
+    <h1>Category list</h1>
+    <div>
+        <a href='@Url.Action("Create", "Category", new { area = "Admin" })'>
+            <button type="button" class="btn btn-primary">Create category</button>
+        </a>
+    </div>
+</div>
+
+<table class="table">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col">Name</th>
+            <th class="fw-normal"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var category in Model)
+        {
+                <tr>
+                    <th scope="row">@category.Name</th>
+
+                    <th class="fw-normal">
+                        <div class="float-end">
+                            <a href='@Url.Action("Edit", "Category", new { area = "Admin", id = category.Id })'>
+                                <button type="button" class="btn btn-primary btn-sm">Edit</button>
+                            </a>
+                        </div>
+                    </th>
+                </tr>
+        }
+    </tbody>
+</table>

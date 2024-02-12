@@ -2,6 +2,7 @@ using Common.Data;
 using Core.Auth;
 using Core.Auth.Dtos;
 using Core.Users.Domain;
+using Infrastructure.Data;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -20,9 +21,9 @@ namespace Tests.Core
             _dbContext = _provider.GetService<IApplicationDbContext>();
         }
 
-        public Task DisposeAsync()
+        public async Task DisposeAsync()
         {
-            return Task.CompletedTask;
+            await (_dbContext as ApplicationDbContext).Database.EnsureDeletedAsync();
         }
 
         public async Task InitializeAsync()
