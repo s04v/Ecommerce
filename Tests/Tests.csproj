@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
@@ -50,6 +50,9 @@
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\src\Common\Common.csproj" />
+    <ProjectReference Include="..\src\Core\Core.csproj" />
+    <ProjectReference Include="..\src\Infrastructure\Infrastructure.csproj" />
     <ProjectReference Include="..\Web\Web.csproj" />
   </ItemGroup>
 
