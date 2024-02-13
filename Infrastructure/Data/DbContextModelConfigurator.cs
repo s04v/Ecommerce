@@ -113,7 +113,7 @@ namespace Infrastructure.Data
 
             builder
                 .HasOne<Category>()
-                .WithMany()
+                .WithMany(o => o.Attributes)
                 .HasForeignKey(o => o.CategoryId);
         }
     }

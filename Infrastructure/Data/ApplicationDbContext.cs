@@ -22,7 +22,7 @@ namespace Infrastructure.Data
         public DbSet<Permission> Permission { get; set; }
         public DbSet<RolePermission> RolePermission { get; set; }
         public DbSet<Category> Category { get; set; }
-        public DbSet<ProductAttribute> CatalogAttribute { get; set; }
+        public DbSet<ProductAttribute> ProductAttribute { get; set; }
 
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)

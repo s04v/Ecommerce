@@ -64,9 +64,44 @@ namespace Core.Catalog
         {
             var category = await _dbContext.Category
                 .Where(o => o.Id == id)
+                .Include(o => o.Attributes)
                 .FirstOrDefaultAsync();
             
             return category;
+        }
+        public async Task<ProductAttribute> AddAttribute(int categoryId, string attributeName)
+        {
+            
+            if (await _dbContext.ProductAttribute.AnyAsync(o => o.Name == attributeName))
+            {
+                throw new DomainException("Attribute already exists");
+            }
+
+            var attribute = new ProductAttribute
+            {
+                CategoryId = categoryId,
+                Name = attributeName
+            };
+
+            await _dbContext.AddAsync(attribute);
+            await _dbContext.SaveChangesAsync();
+
+            return attribute;
+        }
+
+        public async Task RemoveAttribute(int categoryId, int attributeId)
+        {
+            var attribute = await _dbContext.ProductAttribute
+                .Where(o => o.Id == attributeId)
+                .FirstOrDefaultAsync();
+
+            if (attribute == null)
+            {
+                throw new DomainException("Attribute already exists");
+            }
+
+            _dbContext.ProductAttribute.Remove(attribute);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

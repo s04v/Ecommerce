@@ -1,0 +1,91 @@
+﻿@using Web.Areas.Admin.Models
+@using Core.Users.Domain
+@using Core.Catalog.Domain
+
+@{
+    bool isEdit = ViewData["IsEdit"] != null ? true : false;
+    var attributes = ViewData["Attributes"] as IEnumerable<ProductAttribute>;
+}
+
+@model ProductAttributeVm 
+
+<script>
+    $(document).ready(function () {
+        let attributeCount = $("#attributes").length;
+
+        $("#addAttributeButton").click(
+            function () {
+                const attributeName = $('#attributeName').val();
+                
+                $('#attributeName').val("");
+
+                $.ajax({   
+                    url: `/admin/category/${@Url.ActionContext.RouteData.Values["id"]}/attribute`,
+                    type: "POST",   
+                    dataType: "json",
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',   
+                    data: `attributeName=${attributeName}`
+                }).then(function (data) {
+                    $("#attributes").append(`
+                            <div class="d-flex align-items-center" data-id="${data.id}">
+                                <p class="w-25 mr-3">
+                                    ${data.name}
+                                </p>
+                                <div>
+                                    <button type="button" class="btn btn-danger" id="deleteAttribute" onclick="javascript:remove_attribute(this)">Delete</button>
+                                </div>
+                            </div>
+                    `);
+                });
+        });
+
+    });
+
+    function hello() {
+        alert("hello");
+    }
+
+    function remove_attribute(target) {
+
+        const div = $(target).parent().parent();
+        const attributeId = div.attr("data-id");
+
+        $.ajax({
+            url: `/admin/category/${@Url.ActionContext.RouteData.Values["id"]}/attribute`,
+            type: "DELETE",
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            data: `attributeId=${attributeId}`
+        });
+
+        div.remove();
+    }
+</script>
+
+<div id="attributes">
+
+    @foreach (var attr in attributes)
+    {
+        <div class="d-flex align-items-center" data-id="@attr.Id">
+            <p class="w-25 mr-3">
+                @attr.Name
+            </p>
+            <div>
+                <button type="button" class="btn btn-danger" id="deleteAttribute" onclick="javascript:remove_attribute(this)">Delete</button>
+            </div>
+        </div>
+    }
+</div>
+<br />
+
+<div class="d-flex align-items-center gap-2">
+    <div class="w-25 mr-3">
+        <input name="categoryName" value="" type="text" class="form-control" id="attributeName"/>
+    </div>
+    <div>
+        <button type="button" class="btn btn-primary" id="addAttributeButton">Add</button>
+    </div>
+</div>
+
+
+
+

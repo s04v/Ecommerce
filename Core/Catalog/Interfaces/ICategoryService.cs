@@ -15,5 +15,10 @@ namespace Core.Catalog.Interfaces
         Task<IEnumerable<Category>> GetAllCategories();
 
         Task UpdateCategory(int id, string name);
+
+        Task<ProductAttribute> AddAttribute(int categoryId, string attributeName);
+
+        Task RemoveAttribute(int categoryId, int attributeId);
+
     }
 }

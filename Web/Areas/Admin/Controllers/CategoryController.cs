@@ -49,8 +49,11 @@ namespace Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit([FromRoute] int id)
         {
+            ViewData["IsEdit"] = true;
+
             var category = await _categoryService.GetCategory(id);
-            
+            ViewData["Attributes"] = category.Attributes;
+
             return View("Edit", category.Name);
         }
 
@@ -62,6 +65,28 @@ namespace Web.Areas.Admin.Controllers
             await _categoryService.UpdateCategory(id, categoryName);
 
             return RedirectToAction(nameof(Index));
+        }
+
+        [PermissionRequired(PermissionEnum.Category)]
+        [Route("{id}/attribute")]
+        [HttpPost]
+        public async Task<JsonResult> AddAttribute([FromRoute] int id, [FromForm]string attributeName)
+        {
+           var attribute = await _categoryService.AddAttribute(id, attributeName);
+            
+            return Json(attribute);
+        }
+
+        [PermissionRequired(PermissionEnum.Category)]
+        [Route("{id}/attribute")]
+        [HttpDelete]
+        public async Task<IActionResult> RemoveAttribute(
+            [FromRoute] int id, 
+            [FromForm] int attributeId)
+        {
+            await _categoryService.RemoveAttribute(id, attributeId);
+
+            return Ok();
         }
     }
 }

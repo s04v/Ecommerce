@@ -63,5 +63,53 @@ namespace Tests.Core
 
             Assert.Equal(categoryName, category.Name);
         }
+
+        [Fact]
+        public async Task AddAttribute()
+        {
+            var category = new Category
+            {
+                Name = "Phone",
+            };
+
+            await _dbContext.AddAsync(category);
+            await _dbContext.SaveChangesAsync();
+
+            var attributeName = "Memory";
+
+            await _categoryService.AddAttribute(category.Id, attributeName);
+
+            Assert.NotNull(
+                await _dbContext.ProductAttribute
+                .Where(o => o.Name == attributeName)
+                .FirstOrDefaultAsync()
+            );
+
+            await Assert.ThrowsAsync<DomainException>(async () => await _categoryService.AddAttribute(category.Id, attributeName));
+        }
+
+        [Fact]
+        public async Task RemoveAttribute()
+        {
+            var category = new Category
+            {
+                Name = "Phone",
+            };
+
+            await _dbContext.AddAsync(category);
+            await _dbContext.SaveChangesAsync();
+
+            var attributeName = "Memory";
+
+            var attribute = await _categoryService.AddAttribute(category.Id, attributeName);
+            
+            await _categoryService.RemoveAttribute(category.Id, attribute.Id);
+
+            Assert.Null(
+                await _dbContext.ProductAttribute
+                .Where(o => o.Name == attributeName)
+                .FirstOrDefaultAsync()
+            );
+        }
     }
 }
