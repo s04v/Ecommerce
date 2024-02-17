@@ -23,7 +23,7 @@ namespace Infrastructure.Data
         public DbSet<RolePermission> RolePermission { get; set; }
         public DbSet<Category> Category { get; set; }
         public DbSet<ProductAttribute> ProductAttribute { get; set; }
-
+        public DbSet<Manufacturer> Manufacturer { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -46,6 +46,7 @@ namespace Infrastructure.Data
             modelBuilder.Entity<RolePermission>(ConfigureRolePermissionEntity);
             modelBuilder.Entity<Category>(ConfigureCategoryEntity);
             modelBuilder.Entity<ProductAttribute>(ConfigureProductAttributeEntity);
+            modelBuilder.Entity<Manufacturer>(ConfigureManufacturerEntity);
         }
 
         protected void MapColumnName(ModelBuilder modelBuilder)

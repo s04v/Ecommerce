@@ -1,11 +1,14 @@
 using Common.Data;
+using Common.Services;
 using Core.Auth;
 using Core.Catalog;
 using Core.Users;
 using Infrastructure.Data;
+using Infrastructure.Storage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -36,6 +39,8 @@ builder.Services.AddUsersModule();
 builder.Services.AddCatalogModule();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
+
+builder.Services.AddScoped<IStorageService, LocalStorageService>();
 
 // Auth
 builder.Services.AddAuthentication(options =>
@@ -98,6 +103,12 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(builder.Configuration["FileStorage:LocalRootPath"]),
+    RequestPath = "/static"
+});
 
 app.UseAuthentication();
 app.UseAuthorization();

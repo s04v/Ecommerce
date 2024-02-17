@@ -116,5 +116,16 @@ namespace Infrastructure.Data
                 .WithMany(o => o.Attributes)
                 .HasForeignKey(o => o.CategoryId);
         }
+
+        public void ConfigureManufacturerEntity(EntityTypeBuilder<Manufacturer> builder)
+        {
+            builder
+               .ToTable("Manufacturer")
+               .HasKey(o => o.Id);
+
+            builder
+                .Property(f => f.Id)
+                .ValueGeneratedOnAdd();
+        }
     }
 }

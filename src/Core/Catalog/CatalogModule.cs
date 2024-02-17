@@ -15,6 +15,7 @@ namespace Core.Catalog
         public static void AddCatalogModule(this IServiceCollection services)
         {
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IManufacturerService, ManufacturerService>();
         }
     }
 }

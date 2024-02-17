@@ -1,0 +1,44 @@
+﻿@using Core.Catalog.Domain
+
+@{
+    ViewData["Title"] = "Manufacturer";
+}
+
+@model IEnumerable<Manufacturer>
+
+<div class="w-100 d-flex justify-content-between align-items-end mb-2">
+    <h1>Manufacturer list</h1>
+    <div>
+        <a href='@Url.Action("Create", "Manufacturer", new { area = "Admin" })'>
+            <button type="button" class="btn btn-primary">Create manufacturer</button>
+        </a>
+    </div>
+</div>
+
+<table class="table">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col">Name</th>
+            <th class="fw-normal"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var manufacturer in Model)
+        {
+                <tr>
+                <th scope="row">@manufacturer.Name</th>
+
+                    <th class="fw-normal">
+                        <div class="float-end">
+                            <a href='@Url.Action("Edit", "Manufacturer", new { area = "Admin", id = manufacturer.Id })'>
+                                <button type="button" class="btn btn-primary btn-sm">Edit</button>
+                            </a>
+                            <a href='@Url.Action("Delete", "Manufacturer", new { area = "Admin", id = manufacturer.Id })'>
+                                <button type="button" class="btn btn-danger btn-sm">Delete</button>
+                            </a>
+                        </div>
+                    </th>
+                </tr>
+        }
+    </tbody>
+</table>

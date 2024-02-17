@@ -20,6 +20,7 @@ namespace Common.Data
         DbSet<RolePermission> RolePermission { get; set; }
         DbSet<Category> Category { get; set; }
         DbSet<ProductAttribute> ProductAttribute { get; set; }
+        DbSet<Manufacturer> Manufacturer { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
         ValueTask<EntityEntry> AddAsync(object entity, CancellationToken cancellationToken = default);
