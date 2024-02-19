@@ -24,6 +24,8 @@ namespace Infrastructure.Data
         public DbSet<Category> Category { get; set; }
         public DbSet<ProductAttribute> ProductAttribute { get; set; }
         public DbSet<Manufacturer> Manufacturer { get; set; }
+        public DbSet<Product> Product { get; set; }
+        public DbSet<ProductImage> ProductImage { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -47,6 +49,8 @@ namespace Infrastructure.Data
             modelBuilder.Entity<Category>(ConfigureCategoryEntity);
             modelBuilder.Entity<ProductAttribute>(ConfigureProductAttributeEntity);
             modelBuilder.Entity<Manufacturer>(ConfigureManufacturerEntity);
+            modelBuilder.Entity<Product>(ConfigureProductEntity);
+            modelBuilder.Entity<ProductImage>(ConfigureProductImageEntity);
         }
 
         protected void MapColumnName(ModelBuilder modelBuilder)

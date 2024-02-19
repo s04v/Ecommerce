@@ -127,5 +127,38 @@ namespace Infrastructure.Data
                 .Property(f => f.Id)
                 .ValueGeneratedOnAdd();
         }
+
+        public void ConfigureProductEntity(EntityTypeBuilder<Product> builder)
+        {
+            builder
+               .ToTable("Product")
+               .HasKey(o => o.Uuid);
+
+            builder
+                .HasOne<Category>(o => o.Category)
+                .WithMany()
+                .HasForeignKey(o => o.CategoryId);
+
+            builder
+               .HasOne<Manufacturer>(o => o.Manufacturer)
+               .WithMany()
+               .HasForeignKey(o => o.ManufacturerId);
+        }
+
+        public void ConfigureProductImageEntity(EntityTypeBuilder<ProductImage> builder)
+        {
+            builder
+               .ToTable("ProductImage")
+               .HasKey(o => o.Id);
+
+            builder
+                .Property(f => f.Id)
+                .ValueGeneratedOnAdd();
+
+            builder
+                .HasOne<Product>()
+                .WithMany(o => o.Images)
+                .HasForeignKey(o => o.ProductUuid);
+        }
     }
 }

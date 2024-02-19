@@ -1,0 +1,53 @@
+﻿@using Core.Catalog.Domain
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+@model IEnumerable<Product> 
+
+<div class="w-100 d-flex justify-content-between align-items-end mb-2">
+    <h1>Product list</h1>
+    <div>
+        <a href='@Url.Action("Create", "Product", new { area = "Admin" })'>
+            <button type="button" class="btn btn-primary">Create product</button>
+        </a>
+    </div>
+</div>
+
+<table class="table">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col">Name</th>
+            <th>Price</th>
+            <th>Is published</th>
+            <th>Created date</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model)
+        {
+            <tr>
+                <th class="fw-normal">@product.Name</th>
+                <th class="fw-normal">$@product.Price</th>
+                <th class="fw-normal">@product.IsPublished</th>
+                <th class="fw-normal">@product.CreatedDate</th>
+
+                <th class="fw-normal">
+                    <div class="float-end">
+                        <a href='@Url.Action("Edit", "Product", new { area = "Admin", id = product.Uuid })'>
+                            <button type="button" class="btn btn-primary btn-sm">Edit</button>
+                        </a>
+                        <a href='@Url.Action("EditAttributes", "Product", new { area = "Admin", id = product.Uuid })'>
+                            <button type="button" class="btn btn-primary btn-sm">Edit attributes</button>
+                        </a>
+                        <a href='@Url.Action("Delete", "Product", new { area = "Admin", id = product.Uuid })'>
+                            <button type="button" class="btn btn-danger btn-sm">Delete</button>
+                        </a>
+                    </div>
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>

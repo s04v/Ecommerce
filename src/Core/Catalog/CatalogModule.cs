@@ -16,6 +16,7 @@ namespace Core.Catalog
         {
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IManufacturerService, ManufacturerService>();
+            services.AddScoped<IProductService, ProductService>();
         }
     }
 }

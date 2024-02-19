@@ -1,0 +1,17 @@
+﻿@using Web.Areas.Admin.Models
+@using Core.Catalog.Dtos
+
+@{
+    ViewData["Title"] = "Create Product";
+}
+
+@model ProductDto
+
+<h1>Create</h1>
+
+<br />
+<br />
+
+<form asp-area="Admin" asp-controller="Product" asp-action="Create" method="post" enctype="multipart/form-data">
+    @Html.Partial("_CreateOrEdit", Model)
+</form>
