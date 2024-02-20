@@ -1,4 +1,5 @@
 ﻿using Common.Data;
+using Core.Activities.Domain;
 using Core.Auth.Domain;
 using Core.Catalog.Domain;
 using Core.Users;
@@ -26,6 +27,8 @@ namespace Infrastructure.Data
         public DbSet<Manufacturer> Manufacturer { get; set; }
         public DbSet<Product> Product { get; set; }
         public DbSet<ProductImage> ProductImage { get; set; }
+        public DbSet<AdminActivity> Activity { get; set; }
+
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
@@ -51,6 +54,7 @@ namespace Infrastructure.Data
             modelBuilder.Entity<Manufacturer>(ConfigureManufacturerEntity);
             modelBuilder.Entity<Product>(ConfigureProductEntity);
             modelBuilder.Entity<ProductImage>(ConfigureProductImageEntity);
+            modelBuilder.Entity<AdminActivity>(ConfigureActivityEntity);
         }
 
         protected void MapColumnName(ModelBuilder modelBuilder)

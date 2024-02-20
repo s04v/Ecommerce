@@ -1,8 +1,12 @@
 ﻿using Common.Data;
 using Common.Exceptions;
 using Common.Services;
+using Core.Activities;
+using Core.Activities.Domain;
+using Core.AdminActivities.Domain;
 using Core.Catalog.Domain;
 using Core.Catalog.Interfaces;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,10 +19,12 @@ namespace Core.Catalog
     public class CategoryService : ICategoryService
     {
         private readonly IApplicationDbContext _dbContext;
+        private readonly IAdminActivityService _activityService;
 
-        public CategoryService(IApplicationDbContext dbContext)
+        public CategoryService(IApplicationDbContext dbContext, IAdminActivityService activityService)
         {
             _dbContext = dbContext;
+            _activityService = activityService;
         }
 
         public async Task CreateCategory(string name)
@@ -35,6 +41,9 @@ namespace Core.Catalog
 
             await _dbContext.AddAsync(category);
             await _dbContext.SaveChangesAsync();
+
+            await _activityService.InsertActivity(AdminActivityAreaEnum.Category, 
+                $"Created \"{name}\" category");
         }
 
         public async Task<IEnumerable<Category>> GetAllCategories()
@@ -51,6 +60,8 @@ namespace Core.Catalog
                 .Where(o => o.Id == id)
                 .FirstOrDefaultAsync();
 
+            var oldName = category.Name;
+
             if (category == null)
             {
                 throw new DomainException("Category not found");
@@ -58,7 +69,10 @@ namespace Core.Catalog
 
             category.Name = name;
 
-            await _dbContext.SaveChangesAsync(); 
+            await _dbContext.SaveChangesAsync();
+
+            await _activityService.InsertActivity(AdminActivityAreaEnum.Category,
+                $"Category updated from \"{oldName}\" to \"{name}\" ");
         }
 
         public async Task<Category> GetCategory(int id)
@@ -87,6 +101,13 @@ namespace Core.Catalog
             await _dbContext.AddAsync(attribute);
             await _dbContext.SaveChangesAsync();
 
+            var category = await _dbContext.Category
+                .Where(o => o.Id == categoryId)
+                .FirstOrDefaultAsync();
+
+            await _activityService.InsertActivity(AdminActivityAreaEnum.Category,
+                $"Attribute \"{attributeName}\" added to \"{category.Name}\" category ");
+
             return attribute;
         }
 
@@ -103,6 +124,13 @@ namespace Core.Catalog
 
             _dbContext.ProductAttribute.Remove(attribute);
             await _dbContext.SaveChangesAsync();
+
+            var category = await _dbContext.Category
+               .Where(o => o.Id == categoryId)
+               .FirstOrDefaultAsync();
+
+            await _activityService.InsertActivity(AdminActivityAreaEnum.Category,
+                $"Attribute \"{attribute.Name}\" removed from \"{category.Name}\" category ");
         }
     }
 }

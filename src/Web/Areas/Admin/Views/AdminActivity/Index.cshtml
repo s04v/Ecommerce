@@ -1,0 +1,40 @@
+﻿@using Core.Activities.Domain
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@model IEnumerable<AdminActivity>
+
+<h1>Admin activity</h1>
+
+<table class="table">
+    <thead class="table-dark">
+        <tr>
+            <th scope="col">Admin Name</th>
+            <th class="fw-normal">Email</th>
+            <th class="fw-normal">Log</th>
+            <th class="fw-norm al">Created date</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var activity in Model)
+        {
+            <tr>
+                <th class="fw-normal">
+                    @activity.Admin.FirstName @activity.Admin.LastName
+                </th>
+                <th class="fw-normal">
+                    @activity.Admin.Email
+                </th>
+                <th class="fw-normal">
+                    @activity.Log
+                </th>
+
+                <th class="fw-normal">
+                    @activity.CreatedDate
+                </th>
+            </tr>
+        }
+    </tbody>
+</table>

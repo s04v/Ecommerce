@@ -1,6 +1,8 @@
 ﻿using Common;
 using Common.Data;
 using Common.Services;
+using Core.Activities;
+using Core.AdminActivities.Domain;
 using Core.Catalog.Domain;
 using Core.Catalog.Dtos;
 using Core.Catalog.Interfaces;
@@ -21,11 +23,13 @@ namespace Core.Catalog
     {
         private readonly IApplicationDbContext _dbContext;
         private readonly IStorageService _storageService;
+        private readonly IAdminActivityService _activityService;
 
-        public ProductService(IApplicationDbContext dbContext, IStorageService storageService)
+        public ProductService(IApplicationDbContext dbContext, IStorageService storageService, IAdminActivityService activityService)
         {
             _dbContext = dbContext;
             _storageService = storageService;
+            _activityService = activityService;
         }
 
         public async Task<Product> GetProduct(Guid uuid)
@@ -67,6 +71,9 @@ namespace Core.Catalog
 
             await _dbContext.AddAsync(product);
             await _dbContext.SaveChangesAsync();
+
+            await _activityService.InsertActivity(AdminActivityAreaEnum.Product,
+                $"Created \"{product.Name}\" product.");
         }
 
         public async Task UpdateProduct(ProductDto productDto)
@@ -93,8 +100,10 @@ namespace Core.Catalog
             }
 
             await _dbContext.SaveChangesAsync();
-        }
 
+            await _activityService.InsertActivity(AdminActivityAreaEnum.Product,
+                $"Updated \"{product.Name}\" product.");
+        }
 
         private string CreateProductSlug(string name)
         {

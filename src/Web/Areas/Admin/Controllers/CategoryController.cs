@@ -1,6 +1,10 @@
-﻿using Core.Catalog.Interfaces;
+﻿using Core.Activities.Domain;
+using Core.Catalog.Domain;
+using Core.Catalog.Interfaces;
 using Core.Users.Domain;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Web.Extensions;
 using Web.Middleware;
 
 namespace Web.Areas.Admin.Controllers
@@ -72,7 +76,7 @@ namespace Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<JsonResult> AddAttribute([FromRoute] int id, [FromForm]string attributeName)
         {
-           var attribute = await _categoryService.AddAttribute(id, attributeName);
+            var attribute = await _categoryService.AddAttribute(id, attributeName);
             
             return Json(attribute);
         }

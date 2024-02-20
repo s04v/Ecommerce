@@ -1,5 +1,6 @@
 using Common.Data;
 using Common.Services;
+using Core.Activities;
 using Core.Auth;
 using Core.Catalog;
 using Core.Users;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Web;
 using Web.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -30,6 +32,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(opt =>
     opt.UseSqlServer(connectionString);
 });
 
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddScoped<IWorkContext, WorkContext>();
+
 // Data
 builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 
@@ -37,6 +43,8 @@ builder.Services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
 builder.Services.AddAuthModule();
 builder.Services.AddUsersModule();
 builder.Services.AddCatalogModule();
+
+builder.Services.AddScoped<IAdminActivityService, AdminActivityService>();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
 

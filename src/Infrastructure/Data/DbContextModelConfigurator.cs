@@ -1,4 +1,5 @@
-﻿using Core.Auth.Domain;
+﻿using Core.Activities.Domain;
+using Core.Auth.Domain;
 using Core.Catalog.Domain;
 using Core.Users.Domain;
 using Microsoft.EntityFrameworkCore;
@@ -159,6 +160,22 @@ namespace Infrastructure.Data
                 .HasOne<Product>()
                 .WithMany(o => o.Images)
                 .HasForeignKey(o => o.ProductUuid);
+        }
+
+        public void ConfigureActivityEntity(EntityTypeBuilder<AdminActivity> builder)
+        {
+            builder
+               .ToTable("AdminActivity")
+               .HasKey(o => o.Id);
+
+            builder
+                .Property(f => f.Id)
+                .ValueGeneratedOnAdd();
+
+            builder
+                .HasOne<User>(o => o.Admin)
+                .WithMany()
+                .HasForeignKey(o => o.AdminUuid);
         }
     }
 }

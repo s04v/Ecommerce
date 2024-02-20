@@ -1,4 +1,5 @@
-﻿using Core.Auth.Domain;
+﻿using Core.Activities.Domain;
+using Core.Auth.Domain;
 using Core.Catalog.Domain;
 using Core.Users.Domain;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +24,7 @@ namespace Common.Data
         DbSet<Manufacturer> Manufacturer { get; set; }
         DbSet<Product> Product { get; set; }
         DbSet<ProductImage> ProductImage { get; set; }
+        DbSet<AdminActivity> Activity { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
         ValueTask<EntityEntry> AddAsync(object entity, CancellationToken cancellationToken = default);

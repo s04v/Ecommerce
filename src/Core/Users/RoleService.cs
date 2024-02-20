@@ -1,5 +1,7 @@
 ﻿using Common.Data;
 using Common.Exceptions;
+using Core.Activities;
+using Core.AdminActivities.Domain;
 using Core.Users.Domain;
 using Core.Users.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime;
+using System.Security;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,10 +21,11 @@ namespace Core.Users
     {
         private readonly ClaimsPrincipal _user;
         private readonly IApplicationDbContext _dbContext;
-
-        public RoleService(IApplicationDbContext dbContext)
+        private readonly IAdminActivityService _activityService;
+        public RoleService(IApplicationDbContext dbContext, IAdminActivityService activityService)
         {
             _dbContext = dbContext;
+            _activityService = activityService;
         }
 
         public async Task<Role> CreateRole(string name)
@@ -38,6 +42,9 @@ namespace Core.Users
 
             await _dbContext.AddAsync(role);
             await _dbContext.SaveChangesAsync();
+
+            await _activityService.InsertActivity(AdminActivityAreaEnum.Role,
+                $"Created \"{name}\" role");
 
             return role;
         }
@@ -82,6 +89,9 @@ namespace Core.Users
 
             await _dbContext.AddAsync(rolePermission);
             await _dbContext.SaveChangesAsync();
+
+            await _activityService.InsertActivity(AdminActivityAreaEnum.Role,
+                $"Add \"{permission.Name}\" permission for \"{role.Name}\" role");
         }
 
         public async Task RemovePermit(int roleId, int permissionId)
@@ -103,6 +113,9 @@ namespace Core.Users
             _dbContext.RolePermission.Remove(rolePermission);
 
             await _dbContext.SaveChangesAsync();
+
+            await _activityService.InsertActivity(AdminActivityAreaEnum.Role,
+                $"Remove \"{rolePermission.Permission.Name}\" permission from \"{role.Name}\" role");
         }
 
         public async Task<IEnumerable<Permission>> GetAllPermissions()

@@ -2,6 +2,8 @@
 using Common.Data;
 using Common.Exceptions;
 using Common.Services;
+using Core.Activities;
+using Core.AdminActivities.Domain;
 using Core.Catalog.Domain;
 using Core.Catalog.Dtos;
 using Core.Catalog.Interfaces;
@@ -18,11 +20,13 @@ namespace Core.Catalog
     {
         private readonly IApplicationDbContext _dbContext;
         private readonly IStorageService _storageService;
+        private readonly IAdminActivityService _activityService;
 
-        public ManufacturerService(IApplicationDbContext dbContext, IStorageService storageService)
+        public ManufacturerService(IApplicationDbContext dbContext, IStorageService storageService, IAdminActivityService activityService)
         {
             _dbContext = dbContext;
             _storageService = storageService;
+            _activityService = activityService;
         }
 
         public async Task CreateManufacturer(ManufacturerDto manufacturerDto)
@@ -40,6 +44,9 @@ namespace Core.Catalog
 
             await _dbContext.AddAsync(manufacturer);
             await _dbContext.SaveChangesAsync();
+
+            await _activityService.InsertActivity(AdminActivityAreaEnum.Manufacturer,
+                $"Created \"{manufacturer.Name}\" manufacturer");
         }
 
         public async Task<Manufacturer> Get(int id)
@@ -81,6 +88,9 @@ namespace Core.Catalog
             }
 
             await _dbContext.SaveChangesAsync();
+
+            await _activityService.InsertActivity(AdminActivityAreaEnum.Manufacturer,
+                $"Updated \"{manufacturer.Name}\" manufacturer.");
         }
 
         public async Task Remove(int id)
@@ -90,6 +100,9 @@ namespace Core.Catalog
             _dbContext.Manufacturer.Attach(manufacturer);
             _dbContext.Manufacturer.Remove(manufacturer);
             await _dbContext.SaveChangesAsync();
+
+            await _activityService.InsertActivity(AdminActivityAreaEnum.Manufacturer,
+               $"Removed \"{manufacturer.Name}\" manufacturer.");
         }
     }
 }
