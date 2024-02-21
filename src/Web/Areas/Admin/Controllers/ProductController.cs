@@ -51,6 +51,16 @@ namespace Web.Areas.Admin.Controllers
         [Route("new")]
         public async Task<ActionResult> Create([FromForm]ProductDto productDto, [FromForm] IFormFile thumbnail)
         {
+            if(!ModelState.IsValid)
+            {
+                var categories = await _categoryService.GetAllCategories();
+                var manufacturers = await _manufacturerService.GetAll();
+
+                ViewData["Categories"] = categories;
+                ViewData["Manufacturers"] = manufacturers;
+
+                return View(productDto);
+            }
 
             if (thumbnail != null)
             {
@@ -104,6 +114,17 @@ namespace Web.Areas.Admin.Controllers
             [FromForm] ProductDto productDto, 
             [FromForm] IFormFile thumbnail)
         {
+            if (!ModelState.IsValid)
+            {
+                var categories = await _categoryService.GetAllCategories();
+                var manufacturers = await _manufacturerService.GetAll();
+
+                ViewData["Categories"] = categories;
+                ViewData["Manufacturers"] = manufacturers;
+
+                return View(productDto);
+            }
+
             productDto.Uuid = id;
 
             if (thumbnail != null)

@@ -11,6 +11,7 @@
     <div class="mb-3">
         <label class="form-label">Category name</label>
         <input name="categoryName" value="@Model" type="text" class="form-control" />
+        @Html.ValidationMessage("categoryName", "", new { @class = "text-danger" })
     </div>
     
     

@@ -13,6 +13,7 @@
     <div class="mb-3">
         <label class="form-label">Product name</label>
         <input name="Name" value="@Model.Name" type="text" class="form-control" />
+        @Html.ValidationMessage("Name", "", new { @class = "text-danger" })
     </div>
 
     <div class="form-group mb-3">
@@ -32,6 +33,7 @@
                 </option>
             }
         </select>
+        @Html.ValidationMessage("ManufacturerId", "", new { @class = "text-danger" })
      </div>
 
     <div class="form-group mb-3">
@@ -51,6 +53,7 @@
                 </option>
             }
         </select>
+        @Html.ValidationMessage("CategoryId", "", new { @class = "text-danger" })
      </div>
 
     <div class="form-group mb-3">
@@ -60,12 +63,14 @@
                 <span class="input-group-text">$</span>
             </div>
             <input type="number" class="form-control" name="Price" value="@Model.Price">
+            @Html.ValidationMessage("Price", "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="mb-3">
         <label class="form-label">Description</label>
         <textarea name="Description" class="form-control" id="exampleFormControlTextarea1" rows="3">@Model.Description</textarea>
+        @Html.ValidationMessage("Description", "", new { @class = "text-danger" })
     </div>
 
     @if(string.IsNullOrEmpty(Model.ThumbnailPath))

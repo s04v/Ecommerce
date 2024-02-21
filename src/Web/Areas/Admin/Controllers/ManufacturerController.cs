@@ -4,6 +4,7 @@ using Core.Catalog.Interfaces;
 using Core.Users.Domain;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using Web.Middleware;
 
 namespace Web.Areas.Admin.Controllers
@@ -41,10 +42,20 @@ namespace Web.Areas.Admin.Controllers
         [HttpPost]
         [Route("new")]
         public async Task<ActionResult> Create(
-            [FromForm] string manufacturerName,
+            [Required(ErrorMessage = "Manufacturer name is required")]
+            [FromForm] 
+            string manufacturerName,
             [FromForm(Name = "picture")] IFormFile picture
         )
         {
+            if(!ModelState.IsValid)
+            {
+                return View(new Manufacturer
+                { 
+                    Name = manufacturerName
+                });
+            }
+
             using (var ms = new MemoryStream())
             {
                 await picture.CopyToAsync(ms);
@@ -77,11 +88,21 @@ namespace Web.Areas.Admin.Controllers
         [HttpPost]
         [Route("{id}/edit")]
         public async Task<ActionResult> Edit(
-            [FromRoute] int id,
+            [FromRoute]  int id,
             [FromForm] string manufacturerName,
-            [FromForm(Name = "picture")] IFormFile picture
+            [Required(ErrorMessage = "Pitcure is required")]
+            [FromForm(Name = "picture")] 
+            IFormFile picture
         )
         {
+            if (!ModelState.IsValid)
+            {
+                return View(new Manufacturer
+                {
+                    Name = manufacturerName
+                });
+            }
+
             var manufacturerDto = new ManufacturerDto
             {
                 Id = id,
@@ -92,7 +113,6 @@ namespace Web.Areas.Admin.Controllers
             {
                 if (picture != null)
                 {
-
                     await picture.CopyToAsync(ms);
                     ms.Seek(0, SeekOrigin.Begin);
 

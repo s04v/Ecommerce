@@ -4,6 +4,7 @@ using Core.Catalog.Interfaces;
 using Core.Users.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using Web.Extensions;
 using Web.Middleware;
 
@@ -41,8 +42,16 @@ namespace Web.Areas.Admin.Controllers
         [PermissionRequired(PermissionEnum.Category)]
         [Route("new")]
         [HttpPost]
-        public async Task<IActionResult> Create(string categoryName)
+        public async Task<IActionResult> Create(
+            [Required(ErrorMessage = "Category name is required")]
+            string categoryName
+        )
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model: categoryName);
+            }
+
             await _categoryService.CreateCategory(categoryName);
 
             return RedirectToAction(nameof(Index));
@@ -64,8 +73,15 @@ namespace Web.Areas.Admin.Controllers
         [PermissionRequired(PermissionEnum.Category)]
         [Route("{id}/edit")]
         [HttpPost]
-        public async Task<IActionResult> Edit([FromRoute] int id, string categoryName)
+        public async Task<IActionResult> Edit(
+            [FromRoute] int id,
+            [Required(ErrorMessage = "Category name is required")] string categoryName)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model: categoryName);
+            }
+
             await _categoryService.UpdateCategory(id, categoryName);
 
             return RedirectToAction(nameof(Index));
