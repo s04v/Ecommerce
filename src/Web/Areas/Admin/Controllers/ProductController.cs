@@ -112,7 +112,7 @@ namespace Web.Areas.Admin.Controllers
         public async Task<ActionResult> Edit(
             [FromRoute] Guid id,
             [FromForm] ProductDto productDto, 
-            [FromForm] IFormFile thumbnail)
+            [FromForm] IFormFile? thumbnail)
         {
             if (!ModelState.IsValid)
             {
