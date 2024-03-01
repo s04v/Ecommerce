@@ -1,4 +1,5 @@
-﻿using Core.Users.Interfaces;
+﻿using Core.Catalog.Interfaces;
+using Core.Users.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -11,16 +12,25 @@ namespace Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUserService _userService;
+        private readonly IProductService _productService;
 
-        public HomeController(ILogger<HomeController> logger, IUserService userService)
+        public HomeController(ILogger<HomeController> logger, IUserService userService, IProductService productService)
         {
             _logger = logger;
             _userService = userService;
+            _productService = productService;
         }
 
         public async Task<IActionResult> Index()
         {
-            return View();
+            var products = await _productService.GetAllProducts();
+
+            var vm = new HomeModel
+            {
+                Products = products,
+            };
+
+            return View(vm);
         }
 
         public IActionResult Privacy()

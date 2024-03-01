@@ -29,7 +29,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(opt =>
 {
-    opt.UseSqlServer(connectionString);
+    opt.UseSqlServer(connectionString, b => b.MigrationsAssembly("Web"));
 });
 
 builder.Services.AddHttpContextAccessor();

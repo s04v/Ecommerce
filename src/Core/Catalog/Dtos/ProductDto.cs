@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,11 +27,11 @@ namespace Core.Catalog.Dtos
         [Required(ErrorMessage = "Price is required")]
         public decimal Price { get; set; }
 
-        public Stream Thumbnail { get; set; }
+        public Stream? Thumbnail { get; set; }
 
-        public string ThumbnailPath { get; set; }
+        public string? ThumbnailPath { get; set; }
 
-        public string ThumbnailMimeType { get; set; }
+        public string? ThumbnailMimeType { get; set; }
 
         public bool IsPublished { get; set; }
     }

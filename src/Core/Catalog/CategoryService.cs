@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Core.Catalog
@@ -36,7 +37,8 @@ namespace Core.Catalog
 
             var category = new Category
             {
-                Name = name
+                Name = name,
+                Slug = CreateProductSlug(name)
             };
 
             await _dbContext.AddAsync(category);
@@ -68,6 +70,8 @@ namespace Core.Catalog
             }
 
             category.Name = name;
+            category.Slug = CreateProductSlug(name);
+
 
             await _dbContext.SaveChangesAsync();
 
@@ -84,6 +88,14 @@ namespace Core.Catalog
             
             return category;
         }
+
+        public async Task<Category> GetBySlug(string slug)
+        {
+            return await _dbContext.Category
+                .Where(o => o.Slug == slug)
+                .FirstOrDefaultAsync();
+        }
+        
         public async Task<ProductAttribute> AddAttribute(int categoryId, string attributeName)
         {
             
@@ -131,6 +143,16 @@ namespace Core.Catalog
 
             await _activityService.InsertActivity(AdminActivityAreaEnum.Category,
                 $"Attribute \"{attribute.Name}\" removed from \"{category.Name}\" category ");
+        }
+
+        private string CreateProductSlug(string name)
+        {
+            string slug = name.ToLower();
+            slug = Regex.Replace(slug, @"[^a-z0-9\s-]", "");
+            slug = Regex.Replace(slug, @"\s+", " ").Trim();
+            slug = Regex.Replace(slug, @"\s", "-");
+
+            return slug;
         }
     }
 }

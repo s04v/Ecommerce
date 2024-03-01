@@ -1,0 +1,27 @@
+﻿@using Core.Catalog.Domain
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+@model Product
+
+<div>
+    <div class="row">
+        <div class="col-sm">
+            <div>
+                <img class="w-100" src="/static/@Model.Thumbnail" />
+            </div>
+        </div>
+        <div class="col-sm">
+            <h2>@Model.Name</h2>
+            <br />
+            <h4>$@Model.Price</h4>
+            <button class="btn btn-primary">Add to cart</button>
+            <button class="btn btn-dark">Buy now</button>
+            <br />
+            <br />
+            <h4>Description</h4>
+            <p>@Model.Description</p>
+        </div>
+    </div>
+</div>

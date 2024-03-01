@@ -12,6 +12,9 @@ namespace Core.Catalog.Interfaces
         Task CreateCategory(string name);
 
         Task<Category> GetCategory(int id);
+
+        Task<Category> GetBySlug(string slug);
+
         Task<IEnumerable<Category>> GetAllCategories();
 
         Task UpdateCategory(int id, string name);

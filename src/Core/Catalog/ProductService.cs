@@ -39,9 +39,23 @@ namespace Core.Catalog
                 .FirstOrDefaultAsync();
         }
 
+        public async Task<Product> GetProductBySlug(string slug)
+        {
+            return await _dbContext.Product
+                .Where(o => o.Slug == slug)
+                .FirstOrDefaultAsync();
+        }
+        
         public async Task<IEnumerable<Product>> GetAllProducts()
         {
             return await _dbContext.Product
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Product>> GetAllProductsByCategoryId(int categoryId)
+        {
+            return await _dbContext.Product
+                .Where(o => o.CategoryId == categoryId)
                 .ToListAsync();
         }
 

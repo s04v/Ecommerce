@@ -1,0 +1,31 @@
+﻿@using Core.Catalog.Domain
+
+@{
+
+    ViewData["Title"] = Model.Category.Name;
+}
+
+@model CategoryProductsVm
+
+<h1>@Model.Category.Name</h1>
+
+<div class="container">
+    <div class="row">
+        @foreach (var product in Model.Products)
+        {
+            <div class="col-md-2">
+                <div class="product-container h-50 w-75">
+                    <img class="h-100 w-100" src="/static/@product.Thumbnail" />
+                </div>
+                <div class="product-container">
+                    <a href='@Url.Action("ProductPreview", "Product", new { slug = product.Slug })'>
+                        <h5>@product.Name</h5>
+                    </a>
+                    <h6>$@product.Price</h6>
+                    <br />
+                    <button class="btn btn-primary">Add to cart</button>
+                </div>
+            </div>
+        }
+    </div>
+</div>

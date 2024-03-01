@@ -62,7 +62,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text">$</span>
             </div>
-            <input type="number" class="form-control" name="Price" value="@Model.Price">
+            <input type="number" class="form-control" name="Price" value="@Model.Price.ToString().Replace(',','.')">
             @Html.ValidationMessage("Price", "", new { @class = "text-danger" })
         </div>
     </div>
@@ -80,7 +80,8 @@
 
     <div class="mb-3">
         <label class="form-label">Picture</label>
-        <input name="thumbnail" type="file" class="form-control" />
+        <input name="Thumbnail" type="file" class="form-control" />
+        @Html.ValidationMessage("Thumbnail", "", new { @class = "text-danger" })
     </div>
 
     <div class="mb-3">

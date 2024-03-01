@@ -14,7 +14,11 @@ namespace Core.Catalog.Interfaces
 
         Task<Product> GetProduct(Guid uuid);
 
+        Task<Product> GetProductBySlug(string slug);
+
         Task<IEnumerable<Product>> GetAllProducts();
+
+        Task<IEnumerable<Product>> GetAllProductsByCategoryId(int categoryId);
 
         Task UpdateProduct(ProductDto productDto);
 
