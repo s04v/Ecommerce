@@ -177,5 +177,21 @@ namespace Infrastructure.Data
                 .WithMany()
                 .HasForeignKey(o => o.AdminUuid);
         }
+    
+        public void ConfigureProductAttributeValue(EntityTypeBuilder<ProductAttributeValue> builder)
+        {
+            builder
+              .ToTable("ProductAttributeValue")
+              .HasKey(o => o.Id);
+
+            builder
+                .Property(f => f.Id)
+                .ValueGeneratedOnAdd();
+
+            builder
+                .HasOne<ProductAttribute>()
+                .WithMany(o => o.Values)
+                .HasForeignKey(o => o.AttributeId);
+        }
     }
 }

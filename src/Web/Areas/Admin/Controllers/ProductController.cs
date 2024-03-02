@@ -150,24 +150,26 @@ namespace Web.Areas.Admin.Controllers
         {
             var product = await _productService.GetProduct(id);
 
-            var vm = new ProductDto
+            ViewData["Attributes"] = await _productService.GetProductAttributes(id);
+
+            return View("EditAttributes", model: product.Name);
+        }
+
+        [PermissionRequired(PermissionEnum.Product)]
+        [HttpPost]
+        [Route("{id}/edit/attributes")]
+        public async Task<ActionResult> EditAttributes([FromRoute] Guid id, [FromForm] int attributeId, [FromForm] string value)
+        {
+            var dto = new ProductAttributeValueDto
             {
-                Name = product.Name,
-                CategoryId = product.CategoryId,
-                ManufacturerId = product.ManufacturerId,
-                Description = product.Description,
-                Price = product.Price,
-                IsPublished = product.IsPublished,
-                ThumbnailPath = product.Thumbnail
+                Value = value,
+                AttributeId = attributeId,
+                ProductUuid = id,
             };
 
-            var categories = await _categoryService.GetAllCategories();
-            var manufacturers = await _manufacturerService.GetAll();
+            await _productService.AddAttributeValue(dto);
 
-            ViewData["Categories"] = categories;
-            ViewData["Manufacturers"] = manufacturers;
-
-            return View(vm);
+            return RedirectToAction(nameof(EditAttributes));
         }
     }
 }

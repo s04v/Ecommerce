@@ -1,0 +1,74 @@
+﻿@using Core.Catalog.Domain
+
+@{
+    var attributes = ViewData["Attributes"] as IEnumerable<ProductAttribute>;
+}
+
+@model string
+
+<h1>Product Attributes</h1>
+
+<br />
+
+<h2>@Model</h2>
+
+<div class="row">
+    <div class="col-sm">
+        <div class="w-50">
+            <form asp-area="Admin" asp-controller="Product" asp-action="EditAttributes" method="post">
+                <div class="form-group mb-3">
+                    <label for="exampleFormControlSelect1" class="form-label">Attribute</label>
+                    <select name="AttributeId" class="form-control" id="exampleFormControlSelect1">
+                        <option value="null">None</option>
+
+                        @foreach (var attr in attributes)
+                        {
+                            <option value="@attr.Id">
+                                @attr.Name
+                            </option>
+                        }
+                    </select>
+                    @Html.ValidationMessage("AttributeId", "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group mb-3">
+                    <label>Value</label>
+                    <input name="Value" value="" type="text" class="form-control" id="value" />
+                </div>
+                <div class="form-group mb-3">
+                    <label>Additional price</label>
+                    <input name="AdditionalPrice" value="" type="number" class="form-control" id="additionalPrice" />
+                </div>
+                <div>
+                    <button type="save" class="btn btn-primary" id="addAttributeButton">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-sm">
+        @foreach (var attr in attributes)
+        {
+            <div>
+                <h4>@attr.Name:</h4>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Additional price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var attrValue in attr.Values)
+                        {
+                            <tr>
+                                <td>@attrValue.Value</td>
+                                <td>@attrValue.AdditionalPrice</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
+
+

@@ -25,6 +25,7 @@ namespace Common.Data
         DbSet<Product> Product { get; set; }
         DbSet<ProductImage> ProductImage { get; set; }
         DbSet<AdminActivity> Activity { get; set; }
+        DbSet<ProductAttributeValue> ProductAttributeValue { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
         ValueTask<EntityEntry> AddAsync(object entity, CancellationToken cancellationToken = default);

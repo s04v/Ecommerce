@@ -20,6 +20,10 @@ namespace Core.Catalog.Interfaces
 
         Task<IEnumerable<Product>> GetAllProductsByCategoryId(int categoryId);
 
+        Task<IEnumerable<ProductAttribute>> GetProductAttributes(Guid productUuid);
+
+        Task AddAttributeValue(ProductAttributeValueDto dto);
+
         Task UpdateProduct(ProductDto productDto);
 
         /*Task RemoveProduct(int productId);*/

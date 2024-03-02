@@ -13,5 +13,7 @@ namespace Core.Catalog.Domain
         public string Name { get; set; }
 
         public int CategoryId { get; set; }
+
+        public virtual IEnumerable<ProductAttributeValue> Values { get; set; }
     }
 }

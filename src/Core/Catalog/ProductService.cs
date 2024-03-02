@@ -59,6 +59,36 @@ namespace Core.Catalog
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<ProductAttribute>> GetProductAttributes(Guid productUuid)
+        {
+            var productCategoryId = await _dbContext.Product
+                .Where(o => o.Uuid == productUuid)
+                .Select(o => o.CategoryId)
+                .FirstOrDefaultAsync();
+
+            var values = await _dbContext.ProductAttributeValue
+                .ToListAsync(); 
+
+            return await _dbContext.ProductAttribute
+                .Include(o => o.Values)
+                .Where(o => o.CategoryId == productCategoryId)
+                .ToListAsync();
+        }
+
+        public async Task AddAttributeValue(ProductAttributeValueDto dto)
+        {
+            var attributeValue = new ProductAttributeValue
+            {
+                Value = dto.Value,
+                AdditionalPrice = dto.AdditionalPrice,
+                AttributeId = dto.AttributeId,
+                ProductUuid = dto.ProductUuid,
+            };
+
+            await _dbContext.AddAsync(attributeValue);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task CreateProduct(ProductDto productDto)
         {
             var product = new Product
